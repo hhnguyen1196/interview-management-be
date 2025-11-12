@@ -1,13 +1,12 @@
 package assignment.interview_management.service;
 
 import assignment.interview_management.dto.GetJobByIdResponse;
-import assignment.interview_management.dto.JobListRequest;
 import assignment.interview_management.dto.JobListResponse;
 import assignment.interview_management.dto.SaveJobRequest;
 
 public interface JobService {
 
-    JobListResponse getAllJobs(JobListRequest request);
+    JobListResponse getAllJobs(String search, Integer page, Integer size);
 
     void createJob(SaveJobRequest request);
 

@@ -1,5 +1,7 @@
-CREATE DATABASE `interview-management `
+CREATE DATABASE `interview-management`
 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+USE `interview-management`;
 
 CREATE TABLE job (
     id BIGINT NOT NULL AUTO_INCREMENT,
@@ -25,6 +27,6 @@ CREATE TABLE job_skill (
     created_by VARCHAR(255),
     created_date DATETIME,
     updated_by VARCHAR(255),
-    updated_date DATETIME
+    updated_date DATETIME,
     PRIMARY KEY (id)
-) ENGINE = InnoDB
+)

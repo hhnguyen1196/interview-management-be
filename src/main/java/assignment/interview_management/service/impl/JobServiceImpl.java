@@ -28,11 +28,8 @@ public class JobServiceImpl implements JobService {
     private JobSkillRepository jobSkillRepository;
 
     @Override
-    public JobListResponse getAllJobs(JobListRequest request) {
-        List<GetAllJobQuery> jobList = jobRepository.getAllJobs(request.getSearch(),
-                request.getPagination().getPageSize(),
-                request.getPagination().getPageSize() * request.getPagination().getPageNumber());
-
+    public JobListResponse getAllJobs(String search, Integer page, Integer size) {
+        List<GetAllJobQuery> jobList = jobRepository.getAllJobs(search, size, page * size);
         List<Long> jobIdList = jobList.stream().map(GetAllJobQuery::getId).toList();
 
         List<GetJobSkillQuery> jobSkillList = jobRepository.getAllJobSkill(jobIdList);
@@ -40,7 +37,7 @@ public class JobServiceImpl implements JobService {
                 Collectors.groupingBy(GetJobSkillQuery::getJobId,
                         Collectors.mapping(GetJobSkillQuery::getSkill, Collectors.toList())));
 
-        int totalElements = jobRepository.countJob(request.getSearch());
+        int totalElements = jobRepository.countJob(search);
 
         return JobListResponse.builder()
                 .jobList(jobList.stream()

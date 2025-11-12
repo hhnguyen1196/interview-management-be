@@ -1,7 +1,6 @@
 package assignment.interview_management.controller;
 
 import assignment.interview_management.dto.GetJobByIdResponse;
-import assignment.interview_management.dto.JobListRequest;
 import assignment.interview_management.dto.JobListResponse;
 import assignment.interview_management.dto.SaveJobRequest;
 import assignment.interview_management.service.JobService;
@@ -18,9 +17,11 @@ public class JobController {
     private JobService jobService;
 
     @GetMapping("/jobs")
-    public ResponseEntity<JobListResponse> getAllJobs(@RequestBody JobListRequest request) {
-        log(request);
-        return ResponseEntity.ok(jobService.getAllJobs(request));
+    public ResponseEntity<JobListResponse> getAllJobs(@RequestParam("search") String search,
+                                                      @RequestParam("page") Integer page,
+                                                      @RequestParam("size") Integer size) {
+        log(search);
+        return ResponseEntity.ok(jobService.getAllJobs(search, page, size));
     }
 
     @PostMapping("/jobs")
