@@ -20,7 +20,7 @@ public class JobController {
     public ResponseEntity<JobListResponse> getAllJobs(@RequestParam("search") String search,
                                                       @RequestParam("page") Integer page,
                                                       @RequestParam("size") Integer size) {
-        log(search);
+        log("getAllJobs " + search);
         return ResponseEntity.ok(jobService.getAllJobs(search, page, size));
     }
 

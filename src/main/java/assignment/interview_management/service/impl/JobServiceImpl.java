@@ -51,6 +51,7 @@ public class JobServiceImpl implements JobService {
                                 .endDate(o.getEndDate())
                                 .workingAddress(o.getWorkingAddress())
                                 .description(o.getDescription())
+                                .status(o.getStatus())
                                 .build())
                         .toList())
                 .totalElements(totalElements)

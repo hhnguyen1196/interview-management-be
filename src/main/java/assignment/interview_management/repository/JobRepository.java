@@ -14,7 +14,7 @@ import java.util.List;
 public interface JobRepository extends JpaRepository<Job, Long> {
 
     @Query(value = "SELECT id, title, level, salary, start_date AS startDate, end_date AS endDate, " +
-            "working_address, description " +
+            "working_address, description, status " +
             "FROM job " +
             "WHERE (UPPER(title) LIKE UPPER(CONCAT('%', :search, '%')) " +
             "OR UPPER(level) LIKE UPPER(CONCAT('%', :search, '%'))) " +

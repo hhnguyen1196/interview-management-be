@@ -19,4 +19,6 @@ public interface GetAllJobQuery {
     String getWorkingAddress();
 
     String getDescription();
+
+    String getStatus();
 }
