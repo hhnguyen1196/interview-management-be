@@ -1,5 +1,6 @@
 package assignment.interview_management.repository;
 
+import assignment.interview_management.dto.CandidatesForInterviewQuery;
 import assignment.interview_management.dto.GetAllCandidateQuery;
 import assignment.interview_management.entity.Candidate;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,7 +13,7 @@ import java.util.List;
 @Repository
 public interface CandidateRepository extends JpaRepository<Candidate, Long> {
 
-    @Query(value = "SELECT id, full_name AS fullName, email, phone_number AS phoneNumber, position, status " +
+    @Query(value = "SELECT id, full_name AS fullName, email, phone_number AS phoneNumber, position, level, status " +
             "FROM candidate " +
             "WHERE (UPPER(full_name) LIKE UPPER(CONCAT('%', :search, '%')) " +
             "OR UPPER(email) LIKE UPPER(CONCAT('%', :search, '%')) " +
@@ -31,4 +32,13 @@ public interface CandidateRepository extends JpaRepository<Candidate, Long> {
             "OR UPPER(phone_number) LIKE UPPER(CONCAT('%', :search, '%')) " +
             "OR UPPER(position) LIKE UPPER(CONCAT('%', :search, '%'))) " , nativeQuery = true)
     Integer countCandidate(@Param("search") String search);
+
+    @Query(value = "SELECT id, CONCAT(full_name, ' - ', email) AS name " +
+            "FROM candidate " +
+            "WHERE status = 'OPEN' " +
+            "UNION ALL " +
+            "SELECT id, CONCAT(full_name, ' - ', email) AS name " +
+            "FROM candidate " +
+            "WHERE id = (SELECT candidate_id FROM interview WHERE id = :id) ", nativeQuery = true)
+    List<CandidatesForInterviewQuery> findAllCandidate(@Param("id") Long id);
 }
