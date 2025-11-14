@@ -16,8 +16,7 @@ public interface JobRepository extends JpaRepository<Job, Long> {
     @Query(value = "SELECT id, title, level, salary, start_date AS startDate, end_date AS endDate, " +
             "working_address, description, status " +
             "FROM job " +
-            "WHERE (UPPER(title) LIKE UPPER(CONCAT('%', :search, '%')) " +
-            "OR UPPER(level) LIKE UPPER(CONCAT('%', :search, '%'))) " +
+            "WHERE (UPPER(title) LIKE UPPER(CONCAT('%', :search, '%'))) " +
             "ORDER BY updated_date DESC " +
             "LIMIT :limit OFFSET :offset", nativeQuery = true)
     List<GetAllJobQuery> getAllJobs(@Param("search") String search,
@@ -30,7 +29,6 @@ public interface JobRepository extends JpaRepository<Job, Long> {
 
     @Query(value = "SELECT COUNT(1) " +
             "FROM job " +
-            "WHERE (UPPER(title) LIKE UPPER(CONCAT('%', :search, '%')) " +
-            "OR UPPER(level) LIKE UPPER(CONCAT('%', :search, '%'))) ", nativeQuery = true)
+            "WHERE (UPPER(title) LIKE UPPER(CONCAT('%', :search, '%'))) ", nativeQuery = true)
     Integer countJob(@Param("search") String search);
 }

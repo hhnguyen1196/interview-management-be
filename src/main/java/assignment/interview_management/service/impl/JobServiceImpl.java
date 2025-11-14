@@ -84,7 +84,7 @@ public class JobServiceImpl implements JobService {
     public void updateJob(SaveJobRequest request) {
         Optional<Job> jobOptional = jobRepository.findById(request.getId());
         if (jobOptional.isEmpty()) {
-            throw new EntityNotFoundException("Job không tồn tai");
+            throw new EntityNotFoundException("Công việc không tồn tai");
         }
         Job job = jobOptional.get();
         List<JobSkill> jobSkillList = jobSkillRepository.findByJobId(job.getId());
