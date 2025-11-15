@@ -1,6 +1,6 @@
 package assignment.interview_management.service;
 
-import assignment.interview_management.dto.GetJobByIdResponse;
+import assignment.interview_management.dto.JobByIdResponse;
 import assignment.interview_management.dto.JobListResponse;
 import assignment.interview_management.dto.SaveJobRequest;
 
@@ -12,7 +12,7 @@ public interface JobService {
 
     void updateJob(SaveJobRequest request);
 
-    GetJobByIdResponse getJobById(Long id);
+    JobByIdResponse getJobById(Long id);
 
     void deleteJobById(Long id);
 }

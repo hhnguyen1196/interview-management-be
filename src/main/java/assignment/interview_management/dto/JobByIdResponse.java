@@ -12,7 +12,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetJobByIdResponse {
+public class JobByIdResponse {
 
     private Long id;
 
@@ -31,4 +31,6 @@ public class GetJobByIdResponse {
     private String workingAddress;
 
     private String description;
+
+    private String status;
 }

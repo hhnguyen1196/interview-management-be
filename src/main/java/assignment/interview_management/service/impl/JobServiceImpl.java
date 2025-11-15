@@ -104,19 +104,20 @@ public class JobServiceImpl implements JobService {
         job.setEndDate(request.getEndDate());
         job.setWorkingAddress(request.getWorkingAddress());
         job.setDescription(request.getDescription());
+        job.setStatus(request.getStatus());
         jobRepository.save(job);
     }
 
     @Override
-    public GetJobByIdResponse getJobById(Long id) {
+    public JobByIdResponse getJobById(Long id) {
         Optional<Job> jobOptional = jobRepository.findById(id);
         if (jobOptional.isEmpty()) {
-            throw new EntityNotFoundException("Job không tồn tai");
+            throw new EntityNotFoundException("Công việc không tồn tai");
         }
         Job job = jobOptional.get();
         List<JobSkill> jobSkillList = jobSkillRepository.findByJobId(job.getId());
         List<String> skillList = jobSkillList.stream().map(JobSkill::getSkill).toList();
-        return GetJobByIdResponse.builder()
+        return JobByIdResponse.builder()
                 .id(job.getId())
                 .title(job.getTitle())
                 .skills(skillList)
@@ -126,6 +127,7 @@ public class JobServiceImpl implements JobService {
                 .endDate(job.getEndDate())
                 .workingAddress(job.getWorkingAddress())
                 .description(job.getDescription())
+                .status(job.getStatus())
                 .build();
     }
 
@@ -133,7 +135,7 @@ public class JobServiceImpl implements JobService {
     public void deleteJobById(Long id) {
         Optional<Job> jobOptional = jobRepository.findById(id);
         if (jobOptional.isEmpty()) {
-            throw new EntityNotFoundException("Job không tồn tai");
+            throw new EntityNotFoundException("Công việc không tồn tai");
         }
         jobSkillRepository.deleteByJobId(id);
         jobRepository.deleteById(id);

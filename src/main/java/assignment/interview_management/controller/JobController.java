@@ -1,6 +1,6 @@
 package assignment.interview_management.controller;
 
-import assignment.interview_management.dto.GetJobByIdResponse;
+import assignment.interview_management.dto.JobByIdResponse;
 import assignment.interview_management.dto.JobListResponse;
 import assignment.interview_management.dto.SaveJobRequest;
 import assignment.interview_management.service.JobService;
@@ -38,7 +38,7 @@ public class JobController {
     }
 
     @GetMapping("/jobs/{id}")
-    public ResponseEntity<GetJobByIdResponse> getJobById(@PathVariable Long id) {
+    public ResponseEntity<JobByIdResponse> getJobById(@PathVariable Long id) {
         log(id);
         return ResponseEntity.ok(jobService.getJobById(id));
     }
