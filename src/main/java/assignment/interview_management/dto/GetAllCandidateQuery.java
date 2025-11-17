@@ -12,5 +12,7 @@ public interface GetAllCandidateQuery {
 
     String getPosition();
 
+    String getLevel();
+
     String getStatus();
 }
