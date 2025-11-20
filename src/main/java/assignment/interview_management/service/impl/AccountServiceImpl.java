@@ -5,13 +5,16 @@ import assignment.interview_management.dto.AccountListResponse;
 import assignment.interview_management.dto.GetAllAccountQuery;
 import assignment.interview_management.dto.SaveAccountRequest;
 import assignment.interview_management.entity.Account;
+import assignment.interview_management.exceptions.EntityNotFoundException;
 import assignment.interview_management.repository.AccountRepository;
 import assignment.interview_management.service.AccountService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -19,6 +22,8 @@ import java.util.List;
 public class AccountServiceImpl implements AccountService {
 
     private AccountRepository accountRepository;
+
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public AccountListResponse getAllAccounts(String search, Integer page, Integer size) {
@@ -44,7 +49,7 @@ public class AccountServiceImpl implements AccountService {
     public void createAccount(SaveAccountRequest request) {
         accountRepository.save(Account.builder()
                 .username(request.getUsername())
-                .password(request.getPassword())
+                .password(passwordEncoder.encode(request.getPassword()))
                 .fullName(request.getFullName())
                 .gender(request.getGender())
                 .dateOfBirth(request.getDateOfBirth())
@@ -59,6 +64,11 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void updateAccount(SaveAccountRequest request) {
+        Optional<Account> accountOptional = accountRepository.findById(request.getId());
+        if (accountOptional.isEmpty()) {
+            throw new EntityNotFoundException("Tài khoản không tồn tai");
+        }
+        Account account = accountOptional.get();
 
     }
 
