@@ -69,11 +69,37 @@ public class AccountServiceImpl implements AccountService {
             throw new EntityNotFoundException("Tài khoản không tồn tai");
         }
         Account account = accountOptional.get();
-
+        account.setFullName(request.getFullName());
+        account.setGender(request.getGender());
+        account.setDateOfBirth(request.getDateOfBirth());
+        account.setEmail(request.getEmail());
+        account.setAddress(request.getAddress());
+        account.setPhoneNumber(request.getPhoneNumber());
+        account.setDepartment(request.getDepartment());
+        account.setRole(request.getRole());
+        account.setIsActive(request.getIsActive());
+        accountRepository.save(account);
     }
 
     @Override
     public AccountByIdResponse getAccountById(Long id) {
-        return null;
+        Optional<Account> accountOptional = accountRepository.findById(id);
+        if (accountOptional.isEmpty()) {
+            throw new EntityNotFoundException("Tài khoản không tồn tai");
+        }
+        Account account = accountOptional.get();
+        return AccountByIdResponse.builder()
+                .id(account.getId())
+                .username(account.getUsername())
+                .fullName(account.getFullName())
+                .gender(account.getGender())
+                .dateOfBirth(account.getDateOfBirth())
+                .email(account.getEmail())
+                .address(account.getAddress())
+                .phoneNumber(account.getPhoneNumber())
+                .department(account.getDepartment())
+                .role(account.getRole())
+                .isActive(account.getIsActive())
+                .build();
     }
 }

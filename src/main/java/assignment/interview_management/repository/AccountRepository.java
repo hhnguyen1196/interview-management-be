@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AccountRepository extends JpaRepository<Account, Long> {
 
@@ -27,4 +28,6 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
             "OR UPPER(full_name) LIKE UPPER(CONCAT('%', :search, '%')) " +
             "OR UPPER(email) LIKE UPPER(CONCAT('%', :search, '%'))) ", nativeQuery = true)
     Integer countAccount(String search);
+
+    Optional<Account> findByUsername(String username);
 }

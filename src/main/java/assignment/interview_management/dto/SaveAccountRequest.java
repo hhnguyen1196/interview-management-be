@@ -33,4 +33,6 @@ public class SaveAccountRequest {
     private String department;
 
     private String role;
+
+    private Boolean isActive;
 }

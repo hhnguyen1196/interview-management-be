@@ -16,21 +16,23 @@ public class AccountByIdResponse {
 
     private Long id;
 
-    private String title;
+    private String username;
 
-    private List<String> skills;
+    private String fullName;
 
-    private String level;
+    private String gender;
 
-    private String salary;
+    private LocalDate dateOfBirth;
 
-    private LocalDate startDate;
+    private String email;
 
-    private LocalDate endDate;
+    private String address;
 
-    private String workingAddress;
+    private String phoneNumber;
 
-    private String description;
+    private String department;
 
-    private String status;
+    private String role;
+
+    private Boolean isActive;
 }
