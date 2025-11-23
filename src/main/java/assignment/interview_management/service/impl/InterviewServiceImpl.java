@@ -180,7 +180,12 @@ public class InterviewServiceImpl implements InterviewService {
                 throw new EntityNotFoundException("Công việc không tồn tai");
             }
             Job job = jobOptional.get();
-            job.setStatus(JobStatusEnum.CLOSED.name());
+            if (request.getStatus().equals(CandidateStatusEnum.COMPLETED_INTERVIEW.name())) {
+                job.setStatus(JobStatusEnum.COMPLETED.name());
+            } else if (request.getStatus().equals(CandidateStatusEnum.CANCELLED_INTERVIEW.name())
+            || request.getStatus().equals(CandidateStatusEnum.BANNED.name())) {
+                job.setStatus(JobStatusEnum.CLOSED.name());
+            }
             jobRepository.save(job);
             Optional<Candidate> candidateOptional = candidateRepository.findById(interview.getCandidateId());
             if (candidateOptional.isEmpty()) {
