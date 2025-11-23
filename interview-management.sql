@@ -5,6 +5,47 @@ CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE
 `interview-management`;
 
+CREATE TABLE account
+(
+    id            SERIAL PRIMARY KEY,
+    username      VARCHAR(100) NOT NULL UNIQUE,
+    password      VARCHAR(100),
+    full_name     VARCHAR(100),
+    gender        VARCHAR(10),
+    date_of_birth DATE,
+    email         VARCHAR(100),
+    address       TEXT,
+    phone_number  VARCHAR(20),
+    department    VARCHAR(100),
+    role          VARCHAR(10),
+    is_active     BOOLEAN DEFAULT TRUE,
+    created_by    VARCHAR(100),
+    created_date  DATETIME,
+    updated_by    VARCHAR(100),
+    updated_date  DATETIME
+);
+
+INSERT INTO account (username,
+                     password,
+                     full_name,
+                     email,
+                     role,
+                     is_active,
+                     created_by,
+                     created_date,
+                     updated_by,
+                     updated_date)
+VALUES ('admin',
+        '$2a$10$cNadva6mq0Q.4DRGscyY2elKGcRlTraoU73tSDgzW3Wy.VSce.ALW',
+        'admin',
+        'admin@gmail.com',
+        'ADMIN',
+        TRUE,
+        'admin',
+        NOW(),
+        'admin',
+        NOW());
+
 CREATE TABLE job
 (
     id              BIGINT AUTO_INCREMENT PRIMARY KEY,

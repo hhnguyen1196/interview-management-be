@@ -9,8 +9,7 @@ public class PermissionConfiguration {
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers("/auth/login").permitAll()
-                .requestMatchers("/api/download").permitAll()
-                .requestMatchers("/jobs").hasRole("ADMIN")
+                .requestMatchers("/jobs").hasRole("USER")
                 .anyRequest().authenticated());
     }
 }

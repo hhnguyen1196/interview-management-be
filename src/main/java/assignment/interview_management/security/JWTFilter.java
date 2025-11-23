@@ -11,7 +11,7 @@ import java.io.IOException;
 
 @Component
 @AllArgsConstructor
-public class JWTFilter implements Filter {
+public class JWTFilter extends GenericFilter {
 
 
     private TokenProvider tokenProvider;

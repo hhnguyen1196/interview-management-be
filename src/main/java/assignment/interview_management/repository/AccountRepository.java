@@ -1,7 +1,6 @@
 package assignment.interview_management.repository;
 
 import assignment.interview_management.dto.GetAllAccountQuery;
-import assignment.interview_management.dto.UsersForInterviewQuery;
 import assignment.interview_management.entity.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -31,10 +30,4 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     Integer countAccount(String search);
 
     Optional<Account> findByUsername(String username);
-
-    @Query(value = "SELECT id, CONCAT(full_name, ' - ', username) AS name, role " +
-            "FROM account " +
-            "WHERE is_active = TRUE AND role IN ('INTERVIEWER', 'RECRUITER') " +
-            "ORDER BY updated_date DESC", nativeQuery = true)
-    List<UsersForInterviewQuery> findAllAccount();
 }
