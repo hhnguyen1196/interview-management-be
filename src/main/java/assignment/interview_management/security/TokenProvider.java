@@ -23,6 +23,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Quản lý JWT token: tạo token và xác thực token.
+ *
+ * <p>
+ * Class này chịu trách nhiệm:
+ * <ul>
+ *     <li>Tạo JWT token khi người dùng đăng nhập</li>
+ *     <li>Giải mã JWT token để lấy thông tin {@link Authentication}</li>
+ * </ul>
+ * </p>
+ */
 @Component
 @RequiredArgsConstructor
 public class TokenProvider {

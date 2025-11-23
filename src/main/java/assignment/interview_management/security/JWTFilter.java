@@ -9,6 +9,20 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+/**
+ * Lọc JWT để xác thực người dùng trong Spring Security.
+ *
+ * <p>
+ * Class này implement {@link Filter} của Servlet API. Nó sẽ đọc header Authorization từ request,
+ * kiểm tra JWT token thông qua {@link TokenProvider}, và nếu hợp lệ, thiết lập
+ * {@link Authentication} vào {@link SecurityContextHolder}.
+ * </p>
+ *
+ * <p>
+ * Sau khi filter này chạy, các filter và controller phía sau có thể truy cập thông tin người dùng
+ * đã xác thực.
+ * </p>
+ */
 @Component
 @AllArgsConstructor
 public class JWTFilter implements Filter {
