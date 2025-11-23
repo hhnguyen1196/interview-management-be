@@ -33,6 +33,8 @@ public class CandidateListResponse {
 
         private String position;
 
+        private String level;
+
         private String status;
     }
 }

@@ -21,7 +21,7 @@ public class CandidateController {
     public ResponseEntity<CandidateListResponse> getAllCandidates(@RequestParam("search") String search,
                                                                   @RequestParam("page") Integer page,
                                                                   @RequestParam("size") Integer size) {
-        log("getAllCandidates " + search);
+        log("GetAllCandidates " + search);
         return ResponseEntity.ok(candidateService.getAllCandidates(search, page, size));
     }
 

@@ -63,6 +63,7 @@ public class CandidateServiceImpl implements CandidateService {
                                 .email(o.getEmail())
                                 .phoneNumber(o.getPhoneNumber())
                                 .position(o.getPosition())
+                                .level(o.getLevel())
                                 .status(o.getStatus())
                                 .build())
                         .toList())
