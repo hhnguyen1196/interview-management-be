@@ -5,6 +5,7 @@ import assignment.interview_management.entity.Job;
 import assignment.interview_management.entity.JobSkill;
 import assignment.interview_management.enums.JobStatusEnum;
 import assignment.interview_management.exceptions.EntityNotFoundException;
+import assignment.interview_management.exceptions.ForbiddenOperationException;
 import assignment.interview_management.repository.JobRepository;
 import assignment.interview_management.repository.JobSkillRepository;
 import assignment.interview_management.service.JobService;
@@ -139,9 +140,9 @@ public class JobServiceImpl implements JobService {
         }
         Job job = jobOptional.get();
         if (!job.getStatus().equals(JobStatusEnum.OPEN.name())) {
-            throw new EntityNotFoundException("Xóa không thành công: trạng thái công việc hiện tại không cho phép xóa");
+            throw new ForbiddenOperationException("Xóa không thành công: trạng thái công việc không cho phép xóa");
         }
         jobSkillRepository.deleteByJobId(id);
-        jobRepository.deleteById(id);
+        jobRepository.delete(job);
     }
 }

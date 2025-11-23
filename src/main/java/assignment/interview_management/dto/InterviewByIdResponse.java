@@ -31,4 +31,6 @@ public class InterviewByIdResponse {
     private String toHour;
 
     private String meetingId;
+
+    private String status;
 }

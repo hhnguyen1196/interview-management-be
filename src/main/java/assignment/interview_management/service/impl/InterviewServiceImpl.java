@@ -66,6 +66,7 @@ public class InterviewServiceImpl implements InterviewService {
             throw new EntityNotFoundException("Lịch phỏng vấn không tồn tai");
         }
         Interview interview = interviewOptional.get();
+        String status = candidateRepository.getStatusByCandidateId(interview.getCandidateId());
         return InterviewByIdResponse.builder()
                 .id(interview.getId())
                 .jobId(interview.getJobId())
@@ -76,6 +77,7 @@ public class InterviewServiceImpl implements InterviewService {
                 .fromHour(interview.getFromHour().format(FORMATTER))
                 .toHour(interview.getToHour().format(FORMATTER))
                 .meetingId(interview.getMeetingId())
+                .status(status)
                 .build();
     }
 
