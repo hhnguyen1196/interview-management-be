@@ -15,6 +15,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Service xác thực người dùng cho Spring Security.
+ *
+ * <p>
+ * Class này implement {@link UserDetailsService} để Spring Security có thể tải
+ * thông tin người dùng (username, password, role) từ database khi người dùng đăng nhập.
+ * </p>
+ */
 @Service
 @AllArgsConstructor
 public class AuthenticationService implements UserDetailsService {

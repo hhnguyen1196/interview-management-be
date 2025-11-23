@@ -14,6 +14,28 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
+/**
+ * Lớp cơ sở cho các entity để tự động quản lý thông tin.
+ *
+ * <p>
+ * Các entity kế thừa lớp này sẽ tự động lưu:
+ * <ul>
+ *     <li>Người tạo ({@link #createdBy})</li>
+ *     <li>Thời gian tạo ({@link #createdDate})</li>
+ *     <li>Người cập nhật cuối cùng ({@link #updatedBy})</li>
+ *     <li>Thời gian cập nhật cuối cùng ({@link #updatedDate})</li>
+ * </ul>
+ * </p>
+ *
+ * <p>
+ * <b>Chú ý:</b> Các trường này được Spring Data JPA Auditing tự động điền dựa trên
+ * {@link org.springframework.data.domain.AuditorAware} và {@link AuditingEntityListener}.
+ * </p>
+ *
+ * @param <T> kiểu dữ liệu của trường "người thực hiện" (createdBy, updatedBy),
+ *           ví dụ String (username), Long (userId), hoặc UUID.
+ */
+
 @Getter
 @Setter
 @MappedSuperclass
