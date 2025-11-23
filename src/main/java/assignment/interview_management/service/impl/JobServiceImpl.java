@@ -137,6 +137,10 @@ public class JobServiceImpl implements JobService {
         if (jobOptional.isEmpty()) {
             throw new EntityNotFoundException("Công việc không tồn tai");
         }
+        Job job = jobOptional.get();
+        if (!job.getStatus().equals(JobStatusEnum.OPEN.name())) {
+            throw new EntityNotFoundException("Xóa không thành công: trạng thái công việc hiện tại không cho phép xóa");
+        }
         jobSkillRepository.deleteByJobId(id);
         jobRepository.deleteById(id);
     }
