@@ -13,5 +13,7 @@ public class ApiResponseError {
 
     private String message;
 
+    private String error;
+
     private LocalDateTime timestamp;
 }
