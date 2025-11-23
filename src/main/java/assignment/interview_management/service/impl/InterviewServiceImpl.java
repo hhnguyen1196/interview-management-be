@@ -9,6 +9,7 @@ import assignment.interview_management.enums.AccountRole;
 import assignment.interview_management.enums.CandidateStatusEnum;
 import assignment.interview_management.enums.JobStatusEnum;
 import assignment.interview_management.exceptions.EntityNotFoundException;
+import assignment.interview_management.exceptions.ForbiddenOperationException;
 import assignment.interview_management.repository.AccountRepository;
 import assignment.interview_management.repository.CandidateRepository;
 import assignment.interview_management.repository.InterviewRepository;
@@ -219,5 +220,32 @@ public class InterviewServiceImpl implements InterviewService {
                 .recruiterList(recruiterAccountList)
                 .jobList(jobList)
                 .build();
+    }
+
+    @Override
+    public void deleteInterviewById(Long id) {
+        Optional<Interview> interviewOptional = interviewRepository.findById(id);
+        if (interviewOptional.isEmpty()) {
+            throw new EntityNotFoundException("Lịch phỏng vấn không tồn tai");
+        }
+        Interview interview = interviewOptional.get();
+        Optional<Candidate> candidateOptional = candidateRepository.findById(interview.getCandidateId());
+        if (candidateOptional.isEmpty()) {
+            throw new EntityNotFoundException("Ứng viên không tồn tai");
+        }
+        Candidate candidate = candidateOptional.get();
+        if (!candidate.getStatus().equals(CandidateStatusEnum.WAITING_FOR_INTERVIEW.name())) {
+            throw new ForbiddenOperationException("Xóa không thành công: trạng thái lịch phỏng vấn không cho phép xóa");
+        }
+        Optional<Job> jobOptional = jobRepository.findById(interview.getJobId());
+        if (jobOptional.isEmpty()) {
+            throw new EntityNotFoundException("Công việc không tồn tai");
+        }
+        Job job = jobOptional.get();
+        job.setStatus(JobStatusEnum.OPEN.name());
+        jobRepository.save(job);
+        candidate.setStatus(CandidateStatusEnum.OPEN.name());
+        candidateRepository.save(candidate);
+        interviewRepository.delete(interview);
     }
 }

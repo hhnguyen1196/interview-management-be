@@ -44,6 +44,13 @@ public class InterviewController {
         return ResponseEntity.ok(interviewService.getInterviewById(id));
     }
 
+    @DeleteMapping("/interviews/{id}")
+    public ResponseEntity<Void> deleteInterview(@PathVariable Long id) {
+        log(id);
+        interviewService.deleteInterviewById(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/interviews/options")
     public ResponseEntity<InterviewOptionsResponse> getInterviewOptions(
             @RequestParam(value = "id", required = false) Long id) {
