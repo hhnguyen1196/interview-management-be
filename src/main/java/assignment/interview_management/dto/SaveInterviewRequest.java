@@ -29,4 +29,6 @@ public class SaveInterviewRequest {
     private LocalTime toHour;
 
     private String meetingId;
+
+    private String status;
 }
