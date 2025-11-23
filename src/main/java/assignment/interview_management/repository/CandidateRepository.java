@@ -41,4 +41,7 @@ public interface CandidateRepository extends JpaRepository<Candidate, Long> {
             "FROM candidate " +
             "WHERE id = (SELECT candidate_id FROM interview WHERE id = :id) ", nativeQuery = true)
     List<CandidatesForInterviewQuery> findAllCandidate(@Param("id") Long id);
+
+    @Query(value = "SELECT status FROM candidate WHERE id = :id", nativeQuery = true)
+    String getStatusByCandidateId(@Param("id") Long candidateId);
 }

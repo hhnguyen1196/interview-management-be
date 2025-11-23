@@ -7,7 +7,9 @@ import assignment.interview_management.dto.SaveCandidateRequest;
 import assignment.interview_management.entity.Candidate;
 import assignment.interview_management.entity.CandidateSkill;
 import assignment.interview_management.enums.CandidateStatusEnum;
+import assignment.interview_management.enums.JobStatusEnum;
 import assignment.interview_management.exceptions.EntityNotFoundException;
+import assignment.interview_management.exceptions.ForbiddenOperationException;
 import assignment.interview_management.repository.CandidateRepository;
 import assignment.interview_management.repository.CandidateSkillRepository;
 import assignment.interview_management.service.AsyncService;
@@ -107,9 +109,6 @@ public class CandidateServiceImpl implements CandidateService {
             throw new EntityNotFoundException("Ứng viên không tồn tai");
         }
         Candidate candidate = candidateOptional.get();
-        if (!candidate.getStatus().equals(CandidateStatusEnum.OPEN.name())) {
-            throw new EntityNotFoundException("Xóa không thành công: trạng thái ứng viên hiện tại không cho phép xóa");
-        }
         String filePathToDelete = candidate.getCvFilePath();
         List<CandidateSkill> candidateSkillList = candidateSkillRepository.findByCandidateId(candidate.getId());
         candidateSkillRepository.deleteAll(candidateSkillList);
@@ -175,9 +174,13 @@ public class CandidateServiceImpl implements CandidateService {
         if (candidateOptional.isEmpty()) {
             throw new EntityNotFoundException("Ứng viên không tồn tai");
         }
+        Candidate candidate = candidateOptional.get();
+        if (!candidate.getStatus().equals(JobStatusEnum.OPEN.name())) {
+            throw new ForbiddenOperationException("Xóa không thành công: trạng thái ứng viên không cho phép xóa");
+        }
         candidateSkillRepository.deleteByCandidateId(id);
         String filePathToDelete = candidateOptional.get().getCvFilePath();
-        candidateRepository.deleteById(id);
+        candidateRepository.delete(candidate);
         asyncService.deleteFile(filePathToDelete);
     }
 

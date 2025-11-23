@@ -34,4 +34,14 @@ public class GlobalExceptionHandler {
                         .build());
     }
 
+    @ExceptionHandler(ForbiddenOperationException.class)
+    public ResponseEntity<ApiResponseError> handleAuthException(ForbiddenOperationException e) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiResponseError.builder()
+                        .timestamp(LocalDateTime.now())
+                        .status(HttpStatus.OK.value())
+                        .error(HttpStatus.OK.getReasonPhrase())
+                        .message(e.getMessage())
+                        .build());
+    }
 }
