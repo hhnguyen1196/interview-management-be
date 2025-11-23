@@ -17,7 +17,7 @@ CREATE TABLE account
     address       TEXT,
     phone_number  VARCHAR(20),
     department    VARCHAR(100),
-    role          VARCHAR(10),
+    role          VARCHAR(20),
     is_active     BOOLEAN DEFAULT TRUE,
     created_by    VARCHAR(100),
     created_date  DATETIME,
@@ -49,7 +49,7 @@ VALUES ('admin',
 CREATE TABLE job
 (
     id              BIGINT AUTO_INCREMENT PRIMARY KEY,
-    title           VARCHAR(255) NOT NULL,
+    title           VARCHAR(255),
     level           VARCHAR(100),
     salary          VARCHAR(100),
     start_date      DATE,
@@ -105,4 +105,22 @@ CREATE TABLE candidate_skill
     created_date DATETIME,
     updated_by   VARCHAR(100),
     updated_date DATETIME
+);
+
+CREATE TABLE interview
+(
+    id             BIGINT AUTO_INCREMENT PRIMARY KEY,
+    job_id         BIGINT,
+    candidate_id   BIGINT,
+    interviewer_id BIGINT,
+    recruiter_id   BIGINT,
+    schedule_date  DATE,
+    from_hour      TIME(6),
+    to_hour        TIME(6),
+    result         VARCHAR(10),
+    meeting_id     VARCHAR(255),
+    created_by     VARCHAR(100),
+    created_date   DATETIME,
+    updated_by     VARCHAR(100),
+    updated_date   DATETIME
 );
