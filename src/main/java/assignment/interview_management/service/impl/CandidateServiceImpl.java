@@ -107,6 +107,9 @@ public class CandidateServiceImpl implements CandidateService {
             throw new EntityNotFoundException("Ứng viên không tồn tai");
         }
         Candidate candidate = candidateOptional.get();
+        if (!candidate.getStatus().equals(CandidateStatusEnum.OPEN.name())) {
+            throw new EntityNotFoundException("Xóa không thành công: trạng thái ứng viên hiện tại không cho phép xóa");
+        }
         String filePathToDelete = candidate.getCvFilePath();
         List<CandidateSkill> candidateSkillList = candidateSkillRepository.findByCandidateId(candidate.getId());
         candidateSkillRepository.deleteAll(candidateSkillList);
