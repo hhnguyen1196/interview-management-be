@@ -21,7 +21,7 @@ public class AccountController {
     public ResponseEntity<AccountListResponse> getAllAccounts(@RequestParam("search") String search,
                                                               @RequestParam("page") Integer page,
                                                               @RequestParam("size") Integer size) {
-        log("getAllAccounts " + search);
+        log("GetAllAccounts " + search);
         return ResponseEntity.ok(accountService.getAllAccounts(search, page, size));
     }
 

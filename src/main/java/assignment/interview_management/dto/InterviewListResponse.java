@@ -11,9 +11,9 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CandidateListResponse {
+public class InterviewListResponse {
 
-    private List<Candidate> candidateList;
+    private List<Interview> interviewList;
 
     private Integer totalElements;
 
@@ -21,19 +21,19 @@ public class CandidateListResponse {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class Candidate {
+    public static class Interview {
 
         private Long id;
 
-        private String fullName;
+        private String title;
 
-        private String email;
+        private String candidateName;
 
-        private String phoneNumber;
+        private String interviewerName;
 
-        private String position;
+        private String recruiterName;
 
-        private String level;
+        private String schedule;
 
         private String status;
     }
