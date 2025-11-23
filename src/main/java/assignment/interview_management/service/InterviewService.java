@@ -16,4 +16,6 @@ public interface InterviewService {
     void updateInterview(SaveInterviewRequest request);
 
     InterviewOptionsResponse getInterviewOptions(Long id);
+
+    void deleteInterviewById(Long id);
 }
