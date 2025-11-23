@@ -16,6 +16,25 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 
+/**
+ * Xử lý lỗi khi người dùng đã xác thực nhưng **không có quyền truy cập** vào tài nguyên.
+ *
+ * <p>
+ * Class này implement {@link AccessDeniedHandler} của Spring Security.
+ * Khi người dùng không đủ quyền, phương thức {@link #handle(HttpServletRequest, HttpServletResponse, AccessDeniedException)}
+ * sẽ được gọi, trả về response JSON với thông tin lỗi.
+ * </p>
+ *
+ * <p>
+ * JSON trả về bao gồm:
+ * <ul>
+ *     <li>timestamp: thời gian xảy ra lỗi</li>
+ *     <li>status: HTTP status (403)</li>
+ *     <li>error: mã lỗi (FORBIDDEN)</li>
+ *     <li>message: thông báo chi tiết cho client</li>
+ * </ul>
+ * </p>
+ */
 @Component
 @AllArgsConstructor
 public class AccessDeniedErrorHandler implements AccessDeniedHandler {

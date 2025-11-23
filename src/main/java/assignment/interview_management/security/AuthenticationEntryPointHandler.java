@@ -17,6 +17,25 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 
+/**
+ * Xử lý lỗi khi người dùng chưa xác thực (unauthenticated) hoặc thông tin xác thực không hợp lệ.
+ *
+ * <p>
+ * Class này implement {@link AuthenticationEntryPoint} của Spring Security.
+ * Khi một request không được xác thực, phương thức {@link #commence(HttpServletRequest, HttpServletResponse, AuthenticationException)}
+ * sẽ được gọi, trả về response JSON với thông tin lỗi.
+ * </p>
+ *
+ * <p>
+ * JSON trả về bao gồm:
+ * <ul>
+ *     <li>timestamp: thời gian xảy ra lỗi</li>
+ *     <li>status: HTTP status (401)</li>
+ *     <li>error: mã lỗi (UNAUTHORIZED)</li>
+ *     <li>message: thông báo chi tiết cho client</li>
+ * </ul>
+ * </p>
+ */
 @Component
 @AllArgsConstructor
 public class AuthenticationEntryPointHandler implements AuthenticationEntryPoint {
