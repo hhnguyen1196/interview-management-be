@@ -13,6 +13,20 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+/**
+ * Cấu hình chuỗi filter bảo mật cho Spring Security.
+ *
+ * <p>
+ * Class này định nghĩa:
+ * <ul>
+ *     <li>Tắt CSRF vì ứng dụng sử dụng JWT.</li>
+ *     <li>Cấu hình CORS cho các phương thức GET, POST, DELETE.</li>
+ *     <li>Thêm JWT filter trước {@link UsernamePasswordAuthenticationFilter} để xác thực token.</li>
+ *     <li>Thiết lập handler cho lỗi 401 (chưa xác thực) và 403 (không có quyền).</li>
+ *     <li>Delegation cho {@link PermissionConfiguration} để cấu hình quyền truy cập theo route.</li>
+ * </ul>
+ * </p>
+ */
 @Configuration
 @AllArgsConstructor
 public class FilterChainConfiguration {
