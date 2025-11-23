@@ -130,45 +130,65 @@ public class InterviewServiceImpl implements InterviewService {
             throw new EntityNotFoundException("Lịch phỏng vấn không tồn tai");
         }
         Interview interview = interviewOptional.get();
-        if (!interview.getJobId().equals(request.getJobId())) {
-            List<Job> jobList = new ArrayList<>();
-            Optional<Job> jobOptional = jobRepository.findById(interview.getJobId());
-            jobOptional.ifPresent(job -> {
+        if (request.getStatus().equals(CandidateStatusEnum.WAITING_FOR_INTERVIEW.name())) {
+            if (!interview.getJobId().equals(request.getJobId())) {
+                List<Job> jobList = new ArrayList<>();
+                Optional<Job> jobOptional = jobRepository.findById(interview.getJobId());
+                if (jobOptional.isEmpty()) {
+                    throw new EntityNotFoundException("Công việc không tồn tai");
+                }
+                Job job = jobOptional.get();
                 job.setStatus(JobStatusEnum.OPEN.name());
                 jobList.add(job);
-            });
 
-            Optional<Job> newJobOptional = jobRepository.findById(request.getJobId());
-            if (newJobOptional.isEmpty()) {
-                throw new EntityNotFoundException("Công việc chỉnh sửa không tồn tai");
+                Optional<Job> newJobOptional = jobRepository.findById(request.getJobId());
+                if (newJobOptional.isEmpty()) {
+                    throw new EntityNotFoundException("Công việc chỉnh sửa không tồn tai");
+                }
+                Job newJob = newJobOptional.get();
+                if (newJob.getStatus().equals(JobStatusEnum.CLOSED.name())) {
+                    throw new EntityNotFoundException("Công việc chỉnh sửa đã bị đóng");
+                }
+                newJob.setStatus(JobStatusEnum.IN_PROGRESS.name());
+                jobList.add(newJob);
+                jobRepository.saveAll(jobList);
+                interview.setJobId(request.getJobId());
             }
-            Job job = newJobOptional.get();
-            if (job.getStatus().equals(JobStatusEnum.CLOSED.name())) {
-                throw new EntityNotFoundException("Công việc chỉnh sửa đã bị đóng");
-            }
-            job.setStatus(JobStatusEnum.IN_PROGRESS.name());
-            jobList.add(job);
-            jobRepository.saveAll(jobList);
-            interview.setJobId(request.getJobId());
-        }
-
-        if (!interview.getCandidateId().equals(request.getCandidateId())) {
-            List<Candidate> candidateList = new ArrayList<>();
-            Optional<Candidate> candidateOptional = candidateRepository.findById(interview.getCandidateId());
-            candidateOptional.ifPresent(candidate -> {
+            if (!interview.getCandidateId().equals(request.getCandidateId())) {
+                List<Candidate> candidateList = new ArrayList<>();
+                Optional<Candidate> candidateOptional = candidateRepository.findById(interview.getCandidateId());
+                if (candidateOptional.isEmpty()) {
+                    throw new EntityNotFoundException("Ứng viên không tồn tai");
+                }
+                Candidate candidate = candidateOptional.get();
                 candidate.setStatus(CandidateStatusEnum.OPEN.name());
                 candidateList.add(candidate);
-            });
 
-            Optional<Candidate> newCandidateOptional = candidateRepository.findById(request.getCandidateId());
-            if (newCandidateOptional.isEmpty()) {
-                throw new EntityNotFoundException("Ứng viên chỉnh sửa không tồn tai");
+                Optional<Candidate> newCandidateOptional = candidateRepository.findById(request.getCandidateId());
+                if (newCandidateOptional.isEmpty()) {
+                    throw new EntityNotFoundException("Ứng viên chỉnh sửa không tồn tai");
+                }
+                Candidate newCandidate = newCandidateOptional.get();
+                newCandidate.setStatus(CandidateStatusEnum.WAITING_FOR_INTERVIEW.name());
+                candidateList.add(newCandidate);
+                candidateRepository.saveAll(candidateList);
+                interview.setCandidateId(request.getCandidateId());
             }
-            Candidate candidate = newCandidateOptional.get();
-            candidate.setStatus(CandidateStatusEnum.WAITING_FOR_INTERVIEW.name());
-            candidateList.add(candidate);
-            candidateRepository.saveAll(candidateList);
-            interview.setCandidateId(request.getCandidateId());
+        } else {
+            Optional<Job> jobOptional = jobRepository.findById(interview.getJobId());
+            if (jobOptional.isEmpty()) {
+                throw new EntityNotFoundException("Công việc không tồn tai");
+            }
+            Job job = jobOptional.get();
+            job.setStatus(JobStatusEnum.CLOSED.name());
+            jobRepository.save(job);
+            Optional<Candidate> candidateOptional = candidateRepository.findById(interview.getCandidateId());
+            if (candidateOptional.isEmpty()) {
+                throw new EntityNotFoundException("Ứng viên không tồn tai");
+            }
+            Candidate candidate = candidateOptional.get();
+            candidate.setStatus(request.getStatus());
+            candidateRepository.save(candidate);
         }
         interview.setInterviewerId(request.getInterviewerId());
         interview.setRecruiterId(request.getRecruiterId());
