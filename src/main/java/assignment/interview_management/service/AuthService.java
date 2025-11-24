@@ -9,4 +9,6 @@ public interface AuthService {
     LoginResponse login(LoginRequest request);
 
     void changePassword(ChangePasswordRequest request);
+
+    void forgotPassword(String username);
 }

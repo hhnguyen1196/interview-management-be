@@ -3,12 +3,15 @@ package assignment.interview_management.service.impl;
 import assignment.interview_management.dto.ChangePasswordRequest;
 import assignment.interview_management.dto.LoginRequest;
 import assignment.interview_management.dto.LoginResponse;
+import assignment.interview_management.dto.SendMailRequest;
 import assignment.interview_management.entity.Account;
 import assignment.interview_management.exceptions.AuthException;
 import assignment.interview_management.exceptions.BusinessException;
 import assignment.interview_management.repository.AccountRepository;
 import assignment.interview_management.security.TokenProvider;
 import assignment.interview_management.service.AuthService;
+import assignment.interview_management.service.EmailService;
+import assignment.interview_management.utils.PasswordUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,6 +21,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.context.Context;
 
 import java.util.Optional;
 
@@ -34,6 +38,8 @@ public class AuthServiceImpl implements AuthService {
     private TokenProvider tokenProvider;
 
     private PasswordEncoder passwordEncoder;
+
+    private EmailService emailService;
 
     @Override
     public LoginResponse login(LoginRequest request) {
@@ -60,4 +66,28 @@ public class AuthServiceImpl implements AuthService {
         account.setPassword(passwordEncoder.encode(request.getNewPassword()));
         accountRepository.save(account);
     }
+
+    @Override
+    public void forgotPassword(String username) {
+        Optional<Account> accountOptional = accountRepository.findByUsername(username);
+        if (accountOptional.isEmpty()) {
+            throw new BusinessException("Username không tồn tại");
+        }
+        Account account = accountOptional.get();
+        Context context = new Context();
+        context.setVariable("fullName", account.getFullName());
+        context.setVariable("username", account.getUsername());
+        String password = PasswordUtils.generatePassword(12);
+        context.setVariable("password", password);
+        String[] to = new String[]{account.getEmail()};
+        String subject = "THÔNG BÁO CẤP LẠI MẬT KHẨU";
+        SendMailRequest sendMailRequest = SendMailRequest.builder()
+                .to(to)
+                .subject(subject)
+                .build();
+        emailService.sendEmail(sendMailRequest, "password-reset", context);
+        account.setPassword(passwordEncoder.encode(password));
+        accountRepository.save(account);
+    }
+
 }

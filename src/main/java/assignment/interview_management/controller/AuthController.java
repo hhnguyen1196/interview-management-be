@@ -7,10 +7,7 @@ import assignment.interview_management.service.AuthService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -30,6 +27,13 @@ public class AuthController {
     public ResponseEntity<Void> changePassword(@RequestBody ChangePasswordRequest request) {
         log(request);
         authService.changePassword(request);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<Void> forgotPassword(@RequestParam String username) {
+        log("ForgotPassword");
+        authService.forgotPassword(username);
         return ResponseEntity.ok().build();
     }
 
