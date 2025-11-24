@@ -1,7 +1,6 @@
 package assignment.interview_management.exceptions;
 
 import assignment.interview_management.dto.ApiResponseError;
-import assignment.interview_management.enums.ErrorCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,13 +11,13 @@ import java.time.LocalDateTime;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ApiResponseError> handleEntityNotFoundException(EntityNotFoundException e) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<ApiResponseError> handleBusinessException(BusinessException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ApiResponseError.builder()
                         .timestamp(LocalDateTime.now())
-                        .status(HttpStatus.NOT_FOUND.value())
-                        .error(ErrorCode.ENTITY_NOT_FOUND.name())
+                        .status(HttpStatus.BAD_REQUEST.value())
+                        .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
                         .message(e.getMessage())
                         .build());
     }
@@ -29,18 +28,7 @@ public class GlobalExceptionHandler {
                 .body(ApiResponseError.builder()
                         .timestamp(LocalDateTime.now())
                         .status(HttpStatus.UNAUTHORIZED.value())
-                        .error(ErrorCode.UNAUTHORIZED.name())
-                        .message(e.getMessage())
-                        .build());
-    }
-
-    @ExceptionHandler(ForbiddenOperationException.class)
-    public ResponseEntity<ApiResponseError> handleAuthException(ForbiddenOperationException e) {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(ApiResponseError.builder()
-                        .timestamp(LocalDateTime.now())
-                        .status(HttpStatus.OK.value())
-                        .error(HttpStatus.OK.getReasonPhrase())
+                        .error(HttpStatus.UNAUTHORIZED.getReasonPhrase())
                         .message(e.getMessage())
                         .build());
     }

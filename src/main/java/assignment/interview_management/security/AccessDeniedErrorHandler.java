@@ -1,7 +1,6 @@
 package assignment.interview_management.security;
 
 import assignment.interview_management.dto.ApiResponseError;
-import assignment.interview_management.enums.ErrorCode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -47,7 +46,7 @@ public class AccessDeniedErrorHandler implements AccessDeniedHandler {
         ApiResponseError.ApiResponseErrorBuilder builder = ApiResponseError.builder();
         builder.timestamp(LocalDateTime.now());
         builder.status(HttpStatus.FORBIDDEN.value());
-        builder.error(ErrorCode.FORBIDDEN.name());
+        builder.error(HttpStatus.FORBIDDEN.getReasonPhrase());
         builder.message("Truy cập bị từ chối. Bạn không có quyền truy cập vào tài nguyên này");
         response.setStatus(HttpStatus.FORBIDDEN.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);

@@ -1,7 +1,6 @@
 package assignment.interview_management.security;
 
 import assignment.interview_management.dto.ApiResponseError;
-import assignment.interview_management.enums.ErrorCode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -48,7 +47,7 @@ public class AuthenticationEntryPointHandler implements AuthenticationEntryPoint
         ApiResponseError.ApiResponseErrorBuilder builder = ApiResponseError.builder();
         builder.timestamp(LocalDateTime.now());
         builder.status(HttpStatus.UNAUTHORIZED.value());
-        builder.error(ErrorCode.UNAUTHORIZED.name());
+        builder.error(HttpStatus.UNAUTHORIZED.getReasonPhrase());
         if (exception instanceof BadCredentialsException) {
             builder.message("Tên đăng nhập hoặc mật khẩu không hợp lệ");
         } else {

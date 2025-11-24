@@ -8,8 +8,7 @@ import assignment.interview_management.entity.Candidate;
 import assignment.interview_management.entity.CandidateSkill;
 import assignment.interview_management.enums.CandidateStatusEnum;
 import assignment.interview_management.enums.JobStatusEnum;
-import assignment.interview_management.exceptions.EntityNotFoundException;
-import assignment.interview_management.exceptions.ForbiddenOperationException;
+import assignment.interview_management.exceptions.BusinessException;
 import assignment.interview_management.repository.CandidateRepository;
 import assignment.interview_management.repository.CandidateSkillRepository;
 import assignment.interview_management.service.AsyncService;
@@ -106,7 +105,7 @@ public class CandidateServiceImpl implements CandidateService {
     public void updateCandidate(SaveCandidateRequest request) {
         Optional<Candidate> candidateOptional = candidateRepository.findById(request.getId());
         if (candidateOptional.isEmpty()) {
-            throw new EntityNotFoundException("Ứng viên không tồn tai");
+            throw new BusinessException("Ứng viên không tồn tai");
         }
         Candidate candidate = candidateOptional.get();
         String filePathToDelete = candidate.getCvFilePath();
@@ -144,7 +143,7 @@ public class CandidateServiceImpl implements CandidateService {
     public CandidateByIdResponse getCandidateById(Long id) {
         Optional<Candidate> candidateOptional = candidateRepository.findById(id);
         if (candidateOptional.isEmpty()) {
-            throw new EntityNotFoundException("Ứng viên không tồn tai");
+            throw new BusinessException("Ứng viên không tồn tai");
         }
         Candidate candidate = candidateOptional.get();
         List<CandidateSkill> candidateSkillList = candidateSkillRepository.findByCandidateId(candidate.getId());
@@ -172,11 +171,11 @@ public class CandidateServiceImpl implements CandidateService {
     public void deleteCandidateById(Long id) {
         Optional<Candidate> candidateOptional = candidateRepository.findById(id);
         if (candidateOptional.isEmpty()) {
-            throw new EntityNotFoundException("Ứng viên không tồn tai");
+            throw new BusinessException("Ứng viên không tồn tai");
         }
         Candidate candidate = candidateOptional.get();
         if (!candidate.getStatus().equals(JobStatusEnum.OPEN.name())) {
-            throw new ForbiddenOperationException("Xóa không thành công: trạng thái ứng viên không cho phép xóa");
+            throw new BusinessException("Xóa không thành công: trạng thái ứng viên không cho phép xóa");
         }
         candidateSkillRepository.deleteByCandidateId(id);
         String filePathToDelete = candidateOptional.get().getCvFilePath();

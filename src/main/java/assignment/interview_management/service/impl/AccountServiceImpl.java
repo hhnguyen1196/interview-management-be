@@ -5,7 +5,7 @@ import assignment.interview_management.dto.AccountListResponse;
 import assignment.interview_management.dto.GetAllAccountQuery;
 import assignment.interview_management.dto.SaveAccountRequest;
 import assignment.interview_management.entity.Account;
-import assignment.interview_management.exceptions.EntityNotFoundException;
+import assignment.interview_management.exceptions.BusinessException;
 import assignment.interview_management.repository.AccountRepository;
 import assignment.interview_management.service.AccountService;
 import lombok.AllArgsConstructor;
@@ -66,7 +66,7 @@ public class AccountServiceImpl implements AccountService {
     public void updateAccount(SaveAccountRequest request) {
         Optional<Account> accountOptional = accountRepository.findById(request.getId());
         if (accountOptional.isEmpty()) {
-            throw new EntityNotFoundException("Tài khoản không tồn tai");
+            throw new BusinessException("Tài khoản không tồn tai");
         }
         Account account = accountOptional.get();
         account.setFullName(request.getFullName());
@@ -85,7 +85,7 @@ public class AccountServiceImpl implements AccountService {
     public AccountByIdResponse getAccountById(Long id) {
         Optional<Account> accountOptional = accountRepository.findById(id);
         if (accountOptional.isEmpty()) {
-            throw new EntityNotFoundException("Tài khoản không tồn tai");
+            throw new BusinessException("Tài khoản không tồn tai");
         }
         Account account = accountOptional.get();
         return AccountByIdResponse.builder()

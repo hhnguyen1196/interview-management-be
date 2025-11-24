@@ -4,8 +4,7 @@ import assignment.interview_management.dto.*;
 import assignment.interview_management.entity.Job;
 import assignment.interview_management.entity.JobSkill;
 import assignment.interview_management.enums.JobStatusEnum;
-import assignment.interview_management.exceptions.EntityNotFoundException;
-import assignment.interview_management.exceptions.ForbiddenOperationException;
+import assignment.interview_management.exceptions.BusinessException;
 import assignment.interview_management.repository.JobRepository;
 import assignment.interview_management.repository.JobSkillRepository;
 import assignment.interview_management.service.JobService;
@@ -85,7 +84,7 @@ public class JobServiceImpl implements JobService {
     public void updateJob(SaveJobRequest request) {
         Optional<Job> jobOptional = jobRepository.findById(request.getId());
         if (jobOptional.isEmpty()) {
-            throw new EntityNotFoundException("Công việc không tồn tai");
+            throw new BusinessException("Công việc không tồn tai");
         }
         Job job = jobOptional.get();
         List<JobSkill> jobSkillList = jobSkillRepository.findByJobId(job.getId());
@@ -113,7 +112,7 @@ public class JobServiceImpl implements JobService {
     public JobByIdResponse getJobById(Long id) {
         Optional<Job> jobOptional = jobRepository.findById(id);
         if (jobOptional.isEmpty()) {
-            throw new EntityNotFoundException("Công việc không tồn tai");
+            throw new BusinessException("Công việc không tồn tai");
         }
         Job job = jobOptional.get();
         List<JobSkill> jobSkillList = jobSkillRepository.findByJobId(job.getId());
@@ -136,11 +135,11 @@ public class JobServiceImpl implements JobService {
     public void deleteJobById(Long id) {
         Optional<Job> jobOptional = jobRepository.findById(id);
         if (jobOptional.isEmpty()) {
-            throw new EntityNotFoundException("Công việc không tồn tai");
+            throw new BusinessException("Công việc không tồn tai");
         }
         Job job = jobOptional.get();
         if (!job.getStatus().equals(JobStatusEnum.OPEN.name())) {
-            throw new ForbiddenOperationException("Xóa không thành công: trạng thái công việc không cho phép xóa");
+            throw new BusinessException("Xóa không thành công: trạng thái công việc không cho phép xóa");
         }
         jobSkillRepository.deleteByJobId(id);
         jobRepository.delete(job);
