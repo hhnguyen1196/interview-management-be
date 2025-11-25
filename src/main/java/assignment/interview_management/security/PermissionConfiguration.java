@@ -22,7 +22,6 @@ public class PermissionConfiguration {
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers("/auth/login").permitAll()
                 .requestMatchers("/api/download").permitAll()
-                .requestMatchers("/password-reset.html").permitAll()
                 .anyRequest().authenticated());
     }
 }

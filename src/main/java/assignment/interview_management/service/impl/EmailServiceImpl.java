@@ -1,6 +1,7 @@
 package assignment.interview_management.service.impl;
 
 import assignment.interview_management.dto.SendMailRequest;
+import assignment.interview_management.exceptions.BusinessException;
 import assignment.interview_management.service.EmailService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -28,12 +29,15 @@ public class EmailServiceImpl implements EmailService {
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
             String htmlContent = templateEngine.process(template, context);
             helper.setTo(request.getTo());
-            helper.setCc(request.getCc());
+            if (request.getCc() != null && request.getCc().length > 0) {
+                helper.setCc(request.getCc());
+            }
             helper.setSubject(request.getSubject());
             helper.setText(htmlContent, true);
             mailSender.send(mimeMessage);
         } catch (MailException | MessagingException e) {
             log.error(e.getMessage(), e);
+            throw new BusinessException("Gửi mail thất bại. Vui lòng thử lại sau");
         }
     }
 }

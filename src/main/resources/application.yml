@@ -18,7 +18,8 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: imsshare.study@gmail.com
-    password: "@Aa123456"
+    password: loza oesp bcpk snch
+#    password: "@Aa123456"
     properties:
       mail:
         smtp:
