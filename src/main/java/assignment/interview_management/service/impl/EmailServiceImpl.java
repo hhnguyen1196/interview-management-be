@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import java.util.UUID;
+
 @Slf4j
 @Service
 @AllArgsConstructor
@@ -33,6 +35,7 @@ public class EmailServiceImpl implements EmailService {
                 helper.setCc(request.getCc());
             }
             helper.setSubject(request.getSubject());
+            helper.getMimeMessage().addHeader("X-Entity-Ref-ID", UUID.randomUUID().toString());
             helper.setText(htmlContent, true);
             mailSender.send(mimeMessage);
         } catch (MailException | MessagingException e) {
