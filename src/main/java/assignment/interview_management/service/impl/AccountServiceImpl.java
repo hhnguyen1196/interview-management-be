@@ -37,7 +37,7 @@ public class AccountServiceImpl implements AccountService {
                                 .fullName(o.getFullName())
                                 .gender(o.getGender())
                                 .email(o.getEmail())
-                                .department(o.getDepartment())
+                                .role(o.getDepartment())
                                 .isActive(o.getIsActive())
                                 .build())
                         .toList())

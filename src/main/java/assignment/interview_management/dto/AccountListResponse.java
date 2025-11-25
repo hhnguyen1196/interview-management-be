@@ -33,7 +33,7 @@ public class AccountListResponse {
 
         private String email;
 
-        private String department;
+        private String role;
 
         private Boolean isActive;
     }
