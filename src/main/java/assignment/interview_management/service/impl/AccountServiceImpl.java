@@ -14,7 +14,20 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
+/**
+ * Triển khai (implementation) của AccountService,
+ * xử lý toàn bộ nghiệp vụ quản lý tài khoản người dùng.
+ *
+ * <p>
+ * Lớp này đảm nhiệm các chức năng:
+ * - Lấy danh sách tài khoản kèm phân trang
+ * - Tạo tài khoản mới (kèm mã hóa mật khẩu)
+ * - Cập nhật thông tin tài khoản
+ * - Lấy thông tin chi tiết theo ID
+ *
+ * Mọi thao tác đều được quản lý trong transaction để đảm bảo tính toàn vẹn dữ liệu.
+ * </p>
+ */
 @Service
 @Transactional
 @AllArgsConstructor
@@ -23,7 +36,15 @@ public class AccountServiceImpl implements AccountService {
     private AccountRepository accountRepository;
 
     private PasswordEncoder passwordEncoder;
-
+    /**
+     * Lấy danh sách tài khoản dựa trên từ khóa tìm kiếm,
+     * có hỗ trợ phân trang bằng limit/offset.
+     *
+     * @param search Từ khóa tìm kiếm
+     * @param page   Số trang (0-based)
+     * @param size   Số lượng phần tử trên mỗi trang
+     * @return Danh sách tài khoản + tổng số lượng bản ghi
+     */
     @Override
     public AccountListResponse getAllAccounts(String search, Integer page, Integer size) {
         List<GetAllAccountQuery> accountList = accountRepository.getAllAccounts(search, size, page * size);
@@ -43,7 +64,14 @@ public class AccountServiceImpl implements AccountService {
                 .totalElements(totalElements)
                 .build();
     }
-
+    /**
+     * Tạo mới tài khoản trong hệ thống.
+     * Thực hiện kiểm tra username đã tồn tại hay chưa.
+     * Nếu chưa tồn tại → mã hóa password và lưu vào database.
+     *
+     * @param request Dữ liệu tài khoản cần tạo mới
+     * @throws BusinessException nếu username đã tồn tại
+     */
     @Override
     public void createAccount(SaveAccountRequest request) {
         Integer accountExists = accountRepository.existsAccount(request.getUsername());
@@ -64,7 +92,12 @@ public class AccountServiceImpl implements AccountService {
                 .isActive(Boolean.TRUE)
                 .build());
     }
-
+    /**
+     * Cập nhật thông tin tài khoản có sẵn trong hệ thống.
+     *
+     * @param request Dữ liệu cập nhật (bao gồm ID tài khoản)
+     * @throws BusinessException nếu tài khoản không tồn tại
+     */
     @Override
     public void updateAccount(SaveAccountRequest request) {
         Optional<Account> accountOptional = accountRepository.findById(request.getId());
@@ -83,7 +116,13 @@ public class AccountServiceImpl implements AccountService {
         account.setIsActive(request.getIsActive());
         accountRepository.save(account);
     }
-
+    /**
+     * Lấy thông tin chi tiết tài khoản theo ID.
+     *
+     * @param id ID tài khoản
+     * @return Thông tin tài khoản tương ứng
+     * @throws BusinessException nếu tài khoản không tồn tại
+     */
     @Override
     public AccountByIdResponse getAccountById(Long id) {
         Optional<Account> accountOptional = accountRepository.findById(id);
