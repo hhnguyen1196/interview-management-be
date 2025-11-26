@@ -24,7 +24,19 @@ import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
 
 import java.util.Optional;
-
+/**
+ * Triển khai các nghiệp vụ xác thực người dùng (AuthService).
+ *
+ * <p>
+ * Lớp này đảm nhiệm:
+ * - Xử lý đăng nhập và sinh JWT token
+ * - Thay đổi mật khẩu người dùng hiện tại
+ * - Cấp lại mật khẩu mới và gửi email thông báo
+ *
+ * Mọi thao tác liên quan đến xác thực đều được kiểm soát trong transaction để đảm bảo
+ * tính toàn vẹn dữ liệu và tránh tình trạng cập nhật thiếu nhất quán.
+ * </p>
+ */
 @Slf4j
 @Service
 @Transactional
@@ -41,6 +53,14 @@ public class AuthServiceImpl implements AuthService {
 
     private EmailService emailService;
 
+    /**
+     * Xử lý đăng nhập hệ thống:
+     * - Xác thực username/password bằng AuthenticationManager
+     * - Sinh token JWT nếu thông tin hợp lệ
+     *
+     * @param request Thông tin đăng nhập
+     * @return LoginResponse chứa JWT token
+     */
     @Override
     public LoginResponse login(LoginRequest request) {
         log.info("request: {}", request);
@@ -50,7 +70,19 @@ public class AuthServiceImpl implements AuthService {
                 .token(tokenProvider.generateToken(authentication))
                 .build();
     }
-
+    /**
+     * Thay đổi mật khẩu của người dùng hiện tại.
+     *
+     * Quy trình:
+     * - Lấy username từ SecurityContext
+     * - Kiểm tra tài khoản tồn tại
+     * - So sánh mật khẩu cũ
+     * - Mã hóa và cập nhật mật khẩu mới
+     *
+     * @param request Thông tin mật khẩu cũ & mật khẩu mới
+     * @throws AuthException nếu tài khoản không tồn tại hoặc không hợp lệ
+     * @throws BusinessException nếu mật khẩu cũ không đúng
+     */
     @Override
     public void changePassword(ChangePasswordRequest request) {
         log.info("request: ChangePasswordRequest");
@@ -66,7 +98,16 @@ public class AuthServiceImpl implements AuthService {
         account.setPassword(passwordEncoder.encode(request.getNewPassword()));
         accountRepository.save(account);
     }
-
+    /**
+     * Xử lý quy trình quên mật khẩu:
+     * - Kiểm tra tài khoản theo username
+     * - Sinh mật khẩu mới ngẫu nhiên
+     * - Gửi email cấp lại mật khẩu cho người dùng
+     * - Cập nhật mật khẩu mới (đã mã hóa) vào hệ thống
+     *
+     * @param username Username của tài khoản cần cấp lại mật khẩu
+     * @throws BusinessException nếu username không tồn tại
+     */
     @Override
     public void forgotPassword(String username) {
         Optional<Account> accountOptional = accountRepository.findByUsername(username);
@@ -74,6 +115,8 @@ public class AuthServiceImpl implements AuthService {
             throw new BusinessException("Username không tồn tại");
         }
         Account account = accountOptional.get();
+
+        // Tạo nội dung email gửi mật khẩu mới
         Context context = new Context();
         context.setVariable("fullName", account.getFullName());
         context.setVariable("username", account.getUsername());
@@ -86,6 +129,8 @@ public class AuthServiceImpl implements AuthService {
                 .subject(subject)
                 .build();
         emailService.sendEmail(sendMailRequest, "password-reset", context);
+
+        // Cập nhật lại mật khẩu mới
         account.setPassword(passwordEncoder.encode(password));
         accountRepository.save(account);
     }
