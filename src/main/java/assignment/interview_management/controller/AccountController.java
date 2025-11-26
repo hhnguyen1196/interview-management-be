@@ -1,6 +1,7 @@
 package assignment.interview_management.controller;
 
 import assignment.interview_management.dto.AccountByIdResponse;
+import assignment.interview_management.dto.AccountInfoResponse;
 import assignment.interview_management.dto.AccountListResponse;
 import assignment.interview_management.dto.SaveAccountRequest;
 import assignment.interview_management.service.AccountService;
@@ -41,6 +42,11 @@ public class AccountController {
     public ResponseEntity<AccountByIdResponse> getAccountById(@PathVariable Long id) {
         log(id);
         return ResponseEntity.ok(accountService.getAccountById(id));
+    }
+
+    @GetMapping("/accounts/info")
+    public ResponseEntity<AccountInfoResponse> getAccountInfo() {
+        return ResponseEntity.ok(accountService.getAccountInfo());
     }
 
     private void log(Object o) {

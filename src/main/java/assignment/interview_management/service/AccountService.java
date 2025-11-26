@@ -1,6 +1,7 @@
 package assignment.interview_management.service;
 
 import assignment.interview_management.dto.AccountByIdResponse;
+import assignment.interview_management.dto.AccountInfoResponse;
 import assignment.interview_management.dto.AccountListResponse;
 import assignment.interview_management.dto.SaveAccountRequest;
 
@@ -13,4 +14,6 @@ public interface AccountService {
     void updateAccount(SaveAccountRequest request);
 
     AccountByIdResponse getAccountById(Long id);
+
+    AccountInfoResponse getAccountInfo();
 }
