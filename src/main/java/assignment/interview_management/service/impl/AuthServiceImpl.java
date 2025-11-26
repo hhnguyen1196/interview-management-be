@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
 
 import java.util.Optional;
+
 /**
  * Triển khai các nghiệp vụ xác thực người dùng (AuthService).
  *
@@ -32,7 +33,6 @@ import java.util.Optional;
  * - Xử lý đăng nhập và sinh JWT token
  * - Thay đổi mật khẩu người dùng hiện tại
  * - Cấp lại mật khẩu mới và gửi email thông báo
- *
  * Mọi thao tác liên quan đến xác thực đều được kiểm soát trong transaction để đảm bảo
  * tính toàn vẹn dữ liệu và tránh tình trạng cập nhật thiếu nhất quán.
  * </p>
@@ -70,9 +70,9 @@ public class AuthServiceImpl implements AuthService {
                 .token(tokenProvider.generateToken(authentication))
                 .build();
     }
+
     /**
      * Thay đổi mật khẩu của người dùng hiện tại.
-     *
      * Quy trình:
      * - Lấy username từ SecurityContext
      * - Kiểm tra tài khoản tồn tại
@@ -80,7 +80,7 @@ public class AuthServiceImpl implements AuthService {
      * - Mã hóa và cập nhật mật khẩu mới
      *
      * @param request Thông tin mật khẩu cũ & mật khẩu mới
-     * @throws AuthException nếu tài khoản không tồn tại hoặc không hợp lệ
+     * @throws AuthException     nếu tài khoản không tồn tại hoặc không hợp lệ
      * @throws BusinessException nếu mật khẩu cũ không đúng
      */
     @Override
@@ -98,6 +98,7 @@ public class AuthServiceImpl implements AuthService {
         account.setPassword(passwordEncoder.encode(request.getNewPassword()));
         accountRepository.save(account);
     }
+
     /**
      * Xử lý quy trình quên mật khẩu:
      * - Kiểm tra tài khoản theo username
@@ -108,6 +109,7 @@ public class AuthServiceImpl implements AuthService {
      * @param username Username của tài khoản cần cấp lại mật khẩu
      * @throws BusinessException nếu username không tồn tại
      */
+
     @Override
     public void forgotPassword(String username) {
         Optional<Account> accountOptional = accountRepository.findByUsername(username);

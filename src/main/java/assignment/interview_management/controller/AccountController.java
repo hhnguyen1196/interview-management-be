@@ -1,6 +1,7 @@
 package assignment.interview_management.controller;
 
 import assignment.interview_management.dto.AccountByIdResponse;
+import assignment.interview_management.dto.AccountInfoResponse;
 import assignment.interview_management.dto.AccountListResponse;
 import assignment.interview_management.dto.SaveAccountRequest;
 import assignment.interview_management.service.AccountService;
@@ -40,8 +41,8 @@ public class AccountController {
      *                - Nếu id == null → tạo tài khoản mới.
      *                - Nếu id != null → cập nhật tài khoản hiện có.
      * @return ResponseEntity với:
-     *         - HTTP 201 CREATED nếu tạo mới.
-     *         - HTTP 204 NO CONTENT nếu cập nhật.
+     * - HTTP 201 CREATED nếu tạo mới.
+     * - HTTP 204 NO CONTENT nếu cập nhật.
      */
     @PostMapping("/accounts")
     public ResponseEntity<Void> saveAccount(@RequestBody SaveAccountRequest request) {

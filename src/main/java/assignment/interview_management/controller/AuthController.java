@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 /**
  * Controller xử lý các API liên quan đến xác thực người dùng
  * như đăng nhập, đổi mật khẩu và quên mật khẩu.
@@ -31,6 +32,7 @@ public class AuthController {
         log(request);
         return ResponseEntity.ok(authService.login(request));
     }
+
     /**
      * Thay đổi mật khẩu cho người dùng.
      *
@@ -43,6 +45,7 @@ public class AuthController {
         authService.changePassword(request);
         return ResponseEntity.ok().build();
     }
+
     /**
      * Xử lý yêu cầu quên mật khẩu theo username.
      *
@@ -55,11 +58,7 @@ public class AuthController {
         authService.forgotPassword(username);
         return ResponseEntity.ok().build();
     }
-    /**
-     * Hàm hỗ trợ ghi log thông tin request.
-     *
-     * @param o Đối tượng chứa dữ liệu request cần ghi log.
-     */
+
     private void log(Object o) {
         log.info("request: {}", o);
     }
