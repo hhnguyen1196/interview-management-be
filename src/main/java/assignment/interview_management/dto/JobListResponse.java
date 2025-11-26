@@ -41,5 +41,7 @@ public class JobListResponse {
         private String workingAddress;
 
         private String description;
+
+        private String status;
     }
 }

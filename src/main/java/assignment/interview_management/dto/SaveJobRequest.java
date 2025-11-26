@@ -29,4 +29,6 @@ public class SaveJobRequest {
     private String workingAddress;
 
     private String description;
+
+    private String status;
 }

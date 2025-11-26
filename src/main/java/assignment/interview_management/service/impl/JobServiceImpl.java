@@ -4,7 +4,7 @@ import assignment.interview_management.dto.*;
 import assignment.interview_management.entity.Job;
 import assignment.interview_management.entity.JobSkill;
 import assignment.interview_management.enums.JobStatusEnum;
-import assignment.interview_management.exceptions.EntityNotFoundException;
+import assignment.interview_management.exceptions.BusinessException;
 import assignment.interview_management.repository.JobRepository;
 import assignment.interview_management.repository.JobSkillRepository;
 import assignment.interview_management.service.JobService;
@@ -28,11 +28,8 @@ public class JobServiceImpl implements JobService {
     private JobSkillRepository jobSkillRepository;
 
     @Override
-    public JobListResponse getAllJobs(JobListRequest request) {
-        List<GetAllJobQuery> jobList = jobRepository.getAllJobs(request.getSearch(),
-                request.getPagination().getPageSize(),
-                request.getPagination().getPageSize() * request.getPagination().getPageNumber());
-
+    public JobListResponse getAllJobs(String search, Integer page, Integer size) {
+        List<GetAllJobQuery> jobList = jobRepository.getAllJobs(search, size, page * size);
         List<Long> jobIdList = jobList.stream().map(GetAllJobQuery::getId).toList();
 
         List<GetJobSkillQuery> jobSkillList = jobRepository.getAllJobSkill(jobIdList);
@@ -40,7 +37,7 @@ public class JobServiceImpl implements JobService {
                 Collectors.groupingBy(GetJobSkillQuery::getJobId,
                         Collectors.mapping(GetJobSkillQuery::getSkill, Collectors.toList())));
 
-        int totalElements = jobRepository.countJob(request.getSearch());
+        int totalElements = jobRepository.countJob(search);
 
         return JobListResponse.builder()
                 .jobList(jobList.stream()
@@ -54,6 +51,7 @@ public class JobServiceImpl implements JobService {
                                 .endDate(o.getEndDate())
                                 .workingAddress(o.getWorkingAddress())
                                 .description(o.getDescription())
+                                .status(o.getStatus())
                                 .build())
                         .toList())
                 .totalElements(totalElements)
@@ -86,7 +84,7 @@ public class JobServiceImpl implements JobService {
     public void updateJob(SaveJobRequest request) {
         Optional<Job> jobOptional = jobRepository.findById(request.getId());
         if (jobOptional.isEmpty()) {
-            throw new EntityNotFoundException("Job không tồn tai");
+            throw new BusinessException("Công việc không tồn tai");
         }
         Job job = jobOptional.get();
         List<JobSkill> jobSkillList = jobSkillRepository.findByJobId(job.getId());
@@ -106,19 +104,20 @@ public class JobServiceImpl implements JobService {
         job.setEndDate(request.getEndDate());
         job.setWorkingAddress(request.getWorkingAddress());
         job.setDescription(request.getDescription());
+        job.setStatus(request.getStatus());
         jobRepository.save(job);
     }
 
     @Override
-    public GetJobByIdResponse getJobById(Long id) {
+    public JobByIdResponse getJobById(Long id) {
         Optional<Job> jobOptional = jobRepository.findById(id);
         if (jobOptional.isEmpty()) {
-            throw new EntityNotFoundException("Job không tồn tai");
+            throw new BusinessException("Công việc không tồn tai");
         }
         Job job = jobOptional.get();
         List<JobSkill> jobSkillList = jobSkillRepository.findByJobId(job.getId());
         List<String> skillList = jobSkillList.stream().map(JobSkill::getSkill).toList();
-        return GetJobByIdResponse.builder()
+        return JobByIdResponse.builder()
                 .id(job.getId())
                 .title(job.getTitle())
                 .skills(skillList)
@@ -128,6 +127,7 @@ public class JobServiceImpl implements JobService {
                 .endDate(job.getEndDate())
                 .workingAddress(job.getWorkingAddress())
                 .description(job.getDescription())
+                .status(job.getStatus())
                 .build();
     }
 
@@ -135,9 +135,13 @@ public class JobServiceImpl implements JobService {
     public void deleteJobById(Long id) {
         Optional<Job> jobOptional = jobRepository.findById(id);
         if (jobOptional.isEmpty()) {
-            throw new EntityNotFoundException("Job không tồn tai");
+            throw new BusinessException("Công việc không tồn tai");
+        }
+        Job job = jobOptional.get();
+        if (!job.getStatus().equals(JobStatusEnum.OPEN.name())) {
+            throw new BusinessException("Xóa không thành công: trạng thái công việc không cho phép xóa");
         }
         jobSkillRepository.deleteByJobId(id);
-        jobRepository.deleteById(id);
+        jobRepository.delete(job);
     }
 }

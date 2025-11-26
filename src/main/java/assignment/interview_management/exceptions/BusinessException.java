@@ -5,9 +5,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class EntityNotFoundException extends RuntimeException {
+public class BusinessException extends RuntimeException {
 
-    public EntityNotFoundException(String message) {
+    public BusinessException(String message) {
         super(message);
     }
 
