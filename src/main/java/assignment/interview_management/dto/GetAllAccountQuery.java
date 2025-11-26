@@ -8,11 +8,11 @@ public interface GetAllAccountQuery {
 
     String getFullName();
 
-    String getGender();
+    String getPhoneNumber();
 
     String getEmail();
 
-    String getDepartment();
+    String getRole();
 
     Boolean getIsActive();
 }

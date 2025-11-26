@@ -29,7 +29,7 @@ public class AccountListResponse {
 
         private String fullName;
 
-        private String gender;
+        private String phoneNumber;
 
         private String email;
 

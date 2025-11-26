@@ -12,7 +12,8 @@ import java.util.Optional;
 
 public interface AccountRepository extends JpaRepository<Account, Long> {
 
-    @Query(value = "SELECT id, username, full_name AS fullName, gender, email, department, is_active AS isActive " +
+    @Query(value = "SELECT id, username, full_name AS fullName, email, phone_number AS phoneNumber, role, " +
+            "is_active AS isActive " +
             "FROM account " +
             "WHERE (UPPER(username) LIKE UPPER(CONCAT('%', :search, '%')) " +
             "OR UPPER(full_name) LIKE UPPER(CONCAT('%', :search, '%')) " +
@@ -37,4 +38,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
             "WHERE is_active = TRUE AND role IN ('INTERVIEWER', 'RECRUITER') " +
             "ORDER BY updated_date DESC", nativeQuery = true)
     List<UsersForInterviewQuery> findAllAccount();
+
+    @Query(value = "SELECT 1 FROM account WHERE username = :username", nativeQuery = true)
+    Integer existsAccount(@Param("username") String username);
 }

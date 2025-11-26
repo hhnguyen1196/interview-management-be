@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -35,9 +36,9 @@ public class AccountServiceImpl implements AccountService {
                                 .id(o.getId())
                                 .username(o.getUsername())
                                 .fullName(o.getFullName())
-                                .gender(o.getGender())
+                                .phoneNumber(o.getPhoneNumber())
                                 .email(o.getEmail())
-                                .role(o.getDepartment())
+                                .role(o.getRole())
                                 .isActive(o.getIsActive())
                                 .build())
                         .toList())
@@ -47,6 +48,10 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void createAccount(SaveAccountRequest request) {
+        Integer accountExists = accountRepository.existsAccount(request.getUsername());
+        if (Objects.nonNull(accountExists)) {
+            throw new BusinessException("Tài khoản này đã tồn tại trong hệ thống");
+        }
         accountRepository.save(Account.builder()
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
