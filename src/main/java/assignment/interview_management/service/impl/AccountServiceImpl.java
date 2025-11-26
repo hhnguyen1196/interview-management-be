@@ -1,14 +1,12 @@
 package assignment.interview_management.service.impl;
 
-import assignment.interview_management.dto.AccountByIdResponse;
-import assignment.interview_management.dto.AccountListResponse;
-import assignment.interview_management.dto.GetAllAccountQuery;
-import assignment.interview_management.dto.SaveAccountRequest;
+import assignment.interview_management.dto.*;
 import assignment.interview_management.entity.Account;
 import assignment.interview_management.exceptions.BusinessException;
 import assignment.interview_management.repository.AccountRepository;
 import assignment.interview_management.service.AccountService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -141,9 +139,15 @@ public class AccountServiceImpl implements AccountService {
                 .email(account.getEmail())
                 .address(account.getAddress())
                 .phoneNumber(account.getPhoneNumber())
-                .department(account.getDepartment())
                 .role(account.getRole())
                 .isActive(account.getIsActive())
+                .build();
+    }
+
+    @Override
+    public AccountInfoResponse getAccountInfo() {
+        return AccountInfoResponse.builder()
+                .username(SecurityContextHolder.getContext().getAuthentication().getName())
                 .build();
     }
 }

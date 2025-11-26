@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class AccountController {
 
     private final AccountService accountService;
+
     /**
      * Lấy danh sách tài khoản theo từ khóa tìm kiếm và phân trang.
      *
@@ -31,6 +32,7 @@ public class AccountController {
         log("GetAllAccounts " + search);
         return ResponseEntity.ok(accountService.getAllAccounts(search, page, size));
     }
+
     /**
      * Tạo mới hoặc cập nhật thông tin tài khoản dựa trên sự tồn tại của ID.
      *
@@ -52,6 +54,7 @@ public class AccountController {
         }
         return isCreated ? ResponseEntity.status(HttpStatus.CREATED).build() : ResponseEntity.noContent().build();
     }
+
     /**
      * Lấy thông tin chi tiết của một tài khoản theo ID.
      *
@@ -63,11 +66,12 @@ public class AccountController {
         log(id);
         return ResponseEntity.ok(accountService.getAccountById(id));
     }
-    /**
-     * Hàm tiện ích dùng để ghi log thông tin request.
-     *
-     * @param o Đối tượng chứa dữ liệu request cần log.
-     */
+
+    @GetMapping("/accounts/info")
+    public ResponseEntity<AccountInfoResponse> getAccountInfo() {
+        return ResponseEntity.ok(accountService.getAccountInfo());
+    }
+
     private void log(Object o) {
         log.info("request: {}", o);
     }
