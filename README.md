@@ -52,9 +52,11 @@ It exposes REST APIs for managing candidates, interviews and related data.
 - Maven 3.8+
 - MySQL 8+ (or compatible)
 
-> [!NOTE]
-> Make sure MySQL is running and you have a database created.
-> Info to create and update database is as defined in interview-management.sql
+> [NOTE]
+>
+>Make sure MySQL is running and you have a database created.
+>
+>Query to create and update database is as defined in interview-management.sql
 
 ---
 
