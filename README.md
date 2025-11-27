@@ -1,36 +1,72 @@
-# 🧩 Interview Management
+# Interview Management – Backend (Spring Boot)
 
-## 🚀 Giới thiệu
-Dự án này là backend cho hệ thống **Interview Management**, được phát triển bằng **Spring Boot** trên nền tảng **Java 17**.  
-Ứng dụng sử dụng **MySQL** làm cơ sở dữ liệu và Spring Data JPA để quản lý ORM.
+Backend service for an **Interview Management** system built with **Java**, **Spring Boot**, and **MySQL**.  
+It exposes REST APIs for managing candidates, interviews and related data.
 
 ---
 
-## ⚙️ Yêu cầu hệ thống
+## 1. Tech Stack
 
-- **JDK:** 17
-- **IDE:** IntelliJ IDEA / Eclipse / NetBeans
+- **Language:** Java (JDK 17+ recommended)
+- **Framework:** Spring Boot
+- **Build Tool:** Maven
 - **Database:** MySQL
+- **Security:** Spring Security & JWT (see `security` package)
+- **Others:** Lombok, Spring Data JPA, Validation (Jakarta/hibernate) – depending on your `pom.xml`
 
 ---
 
-## Hướng dẫn cài đặt
+## 2. Project Structure
 
-### 1️⃣ Cài đặt công cụ cần thiết
-- [Java 17](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
-- [MySQL Server](https://drive.google.com/drive/u/0/folders/1QR55sq3QaVux81-wO-ejZcgrz7F1CO0y)
-- Một IDE (IntelliJ, Eclipse, hoặc NetBeans)
+```text
+.
+├── .mvn/
+├── src
+│   ├── main
+│   │   ├── java
+│   │   │   └── assignment.interview_management
+│   │   │       ├── config/        # Global configs
+│   │   │       ├── controller/    # REST controllers (HTTP endpoints)
+│   │   │       ├── dto/           # Data Transfer Objects used by controllers/services
+│   │   │       ├── entity/        # JPA entities mapped to MySQL tables
+│   │   │       ├── enums/         # Application enums (roles, statuses, etc.)
+│   │   │       ├── exceptions/    # Custom exceptions & global handlers
+│   │   │       ├── repository/    # Spring Data JPA repositories
+│   │   │       ├── security/      # Security config, filters, JWT utilities
+│   │   │       ├── service/       # Business logic
+│   │   │       ├── utils/         # Helpers, constants, mappers
+│   │   │       └── InterviewManagementBeApplication.java  # Main Spring Boot class
+│   │   └── resources
+│   │       ├── templates/         # Email / HTML templates (if used)
+│   │       ├── uploads/           # File upload storage (local)
+│   │       └── application.yml    # Environment & DB configuration
+│   └── test
+└── target/                         # Build output (generated)
+```
 
 ---
 
-### 2️⃣ Tạo cơ sở dữ liệu và khởi tạo cấu trúc ban đầu
+## 3. Prerequisites
 
-1. Mở MySQL Workbench hoặc bất kỳ công cụ quản lý MySQL nào khác.
-2. Tạo database:
-   ```sql
-   CREATE DATABASE `interview-management `
-   CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+- Java JDK 17+
+- Maven 3.8+
+- MySQL 8+ (or compatible)
 
-### 3️⃣ Chạy ứng dụng
+> [!NOTE]
+> Make sure MySQL is running and you have a database created.
+> Info to create and update database is as defined in interview-management.sql
 
 ---
+
+## 4. Build & Run
+
+From the project root:
+```bash
+# Clean and build
+mvn clean install
+```
+
+```bash
+# Run the Spring Boot application
+mvn spring-boot:run
+```
