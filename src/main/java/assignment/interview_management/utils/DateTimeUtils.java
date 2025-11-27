@@ -9,7 +9,6 @@ import java.util.Date;
 
 /**
  * Utility class cung cấp các hàm hỗ trợ xử lý thời gian và chuyển đổi kiểu dữ liệu thời gian.
- * Lớp này không thể khởi tạo do sử dụng {@link NoArgsConstructor} với access PRIVATE.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class DateTimeUtils {

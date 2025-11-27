@@ -41,7 +41,7 @@ public class JobController {
     /**
      * API tạo mới hoặc cập nhật job dựa trên dữ liệu từ client.
      * <p>
-     * - Nếu request không có ID → tạo mới job  
+     * - Nếu request không có ID → tạo mới job
      * - Nếu request có ID → cập nhật job
      *
      * @param request thông tin job cần lưu
