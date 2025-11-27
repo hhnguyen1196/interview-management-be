@@ -43,7 +43,7 @@ public class AuthController {
     public ResponseEntity<Void> changePassword(@RequestBody ChangePasswordRequest request) {
         log(request);
         authService.changePassword(request);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     /**
