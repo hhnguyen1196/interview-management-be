@@ -1,6 +1,5 @@
 package assignment.interview_management.entity;
 
-
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
@@ -33,7 +32,7 @@ import java.time.LocalDateTime;
  * </p>
  *
  * @param <T> kiểu dữ liệu của trường "người thực hiện" (createdBy, updatedBy),
- *           ví dụ String (username), Long (userId), hoặc UUID.
+ *            ví dụ String (username), Long (userId), hoặc UUID.
  */
 
 @Getter

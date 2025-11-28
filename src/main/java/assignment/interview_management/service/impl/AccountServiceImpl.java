@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
 /**
  * Triển khai (implementation) của AccountService,
  * xử lý toàn bộ nghiệp vụ quản lý tài khoản người dùng.
@@ -24,7 +25,6 @@ import java.util.Optional;
  * - Tạo tài khoản mới (kèm mã hóa mật khẩu)
  * - Cập nhật thông tin tài khoản
  * - Lấy thông tin chi tiết theo ID
- *
  * Mọi thao tác đều được quản lý trong transaction để đảm bảo tính toàn vẹn dữ liệu.
  * </p>
  */
@@ -36,6 +36,7 @@ public class AccountServiceImpl implements AccountService {
     private AccountRepository accountRepository;
 
     private PasswordEncoder passwordEncoder;
+
     /**
      * Lấy danh sách tài khoản dựa trên từ khóa tìm kiếm,
      * có hỗ trợ phân trang bằng limit/offset.
@@ -64,6 +65,7 @@ public class AccountServiceImpl implements AccountService {
                 .totalElements(totalElements)
                 .build();
     }
+
     /**
      * Tạo mới tài khoản trong hệ thống.
      * Thực hiện kiểm tra username đã tồn tại hay chưa.
@@ -92,6 +94,7 @@ public class AccountServiceImpl implements AccountService {
                 .isActive(Boolean.TRUE)
                 .build());
     }
+
     /**
      * Cập nhật thông tin tài khoản có sẵn trong hệ thống.
      *
@@ -116,6 +119,7 @@ public class AccountServiceImpl implements AccountService {
         account.setIsActive(request.getIsActive());
         accountRepository.save(account);
     }
+
     /**
      * Lấy thông tin chi tiết tài khoản theo ID.
      *

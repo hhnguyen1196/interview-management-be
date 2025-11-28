@@ -22,6 +22,8 @@ public class PermissionConfiguration {
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers("/auth/login").permitAll()
                 .requestMatchers("/api/download").permitAll()
+                .requestMatchers("/accounts/info").permitAll()
+                .requestMatchers("/accounts/**", "/auth/forgot-password").hasRole("ADMIN")
                 .anyRequest().authenticated());
     }
 }

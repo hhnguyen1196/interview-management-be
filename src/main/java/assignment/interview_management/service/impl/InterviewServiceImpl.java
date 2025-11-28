@@ -182,7 +182,7 @@ public class InterviewServiceImpl implements InterviewService {
             if (request.getStatus().equals(CandidateStatusEnum.COMPLETED_INTERVIEW.name())) {
                 job.setStatus(JobStatusEnum.COMPLETED.name());
             } else if (request.getStatus().equals(CandidateStatusEnum.CANCELLED_INTERVIEW.name())
-            || request.getStatus().equals(CandidateStatusEnum.BANNED.name())) {
+                    || request.getStatus().equals(CandidateStatusEnum.BANNED.name())) {
                 job.setStatus(JobStatusEnum.CLOSED.name());
             }
             jobRepository.save(job);

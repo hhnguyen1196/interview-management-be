@@ -30,7 +30,7 @@ public interface CandidateRepository extends JpaRepository<Candidate, Long> {
             "WHERE (UPPER(full_name) LIKE UPPER(CONCAT('%', :search, '%')) " +
             "OR UPPER(email) LIKE UPPER(CONCAT('%', :search, '%')) " +
             "OR UPPER(phone_number) LIKE UPPER(CONCAT('%', :search, '%')) " +
-            "OR UPPER(position) LIKE UPPER(CONCAT('%', :search, '%'))) " , nativeQuery = true)
+            "OR UPPER(position) LIKE UPPER(CONCAT('%', :search, '%'))) ", nativeQuery = true)
     Integer countCandidate(@Param("search") String search);
 
     @Query(value = "SELECT id, CONCAT(full_name, ' - ', email) AS name " +
