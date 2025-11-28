@@ -56,7 +56,7 @@ public class AuthController {
     public ResponseEntity<Void> forgotPassword(@RequestParam String username) {
         log("ForgotPassword");
         authService.forgotPassword(username);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     private void log(Object o) {
