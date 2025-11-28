@@ -1,9 +1,7 @@
-CREATE
-DATABASE `interview-management`
+CREATE DATABASE `interview-management`
 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-USE
-`interview-management`;
+USE `interview-management`;
 
 CREATE TABLE account
 (

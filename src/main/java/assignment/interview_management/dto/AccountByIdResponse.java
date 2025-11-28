@@ -30,8 +30,6 @@ public class AccountByIdResponse {
 
     private String phoneNumber;
 
-    private String department;
-
     private String role;
 
     private Boolean isActive;
