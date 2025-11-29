@@ -57,7 +57,11 @@ It exposes REST APIs for managing candidates, interviews and related data.
 >Make sure MySQL is running and you have a database created.
 >
 >Query to create and update database is as defined in interview-management.sql
-
+> 
+>**Login Account**  
+> The system provides a default login account:  
+> **admin / 12345678** (role: **ADMIN**).  
+> Passwords are stored using **BCrypt** encryption.
 ---
 
 ## 4. Build & Run
