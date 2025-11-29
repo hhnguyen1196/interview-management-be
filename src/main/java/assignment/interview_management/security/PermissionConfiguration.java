@@ -1,5 +1,6 @@
 package assignment.interview_management.security;
 
+import assignment.interview_management.enums.AccountRole;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.stereotype.Component;
 
@@ -22,8 +23,10 @@ public class PermissionConfiguration {
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers("/auth/login").permitAll()
                 .requestMatchers("/api/download").permitAll()
-                .requestMatchers("/accounts/info").permitAll()
-                .requestMatchers("/accounts/**", "/auth/forgot-password").hasRole("ADMIN")
+                .requestMatchers("/accounts/info")
+                .hasAnyAuthority(AccountRole.ADMIN.name(), AccountRole.INTERVIEWER.name(), AccountRole.RECRUITER.name())
+                .requestMatchers("/accounts/**", "/auth/forgot-password")
+                .hasAuthority(AccountRole.ADMIN.name())
                 .anyRequest().authenticated());
     }
 }

@@ -40,7 +40,7 @@ public class AuthenticationService implements UserDetailsService {
     private User createUserDetails(Account account) {
         Optional<String> roleOptional = Optional.of(account.getRole());
         List<? extends GrantedAuthority> authorities = roleOptional.stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_".concat(role)))
+                .map(SimpleGrantedAuthority::new)
                 .toList();
         return new User(account.getUsername(), account.getPassword(), authorities);
     }
