@@ -115,7 +115,6 @@ CREATE TABLE interview
     schedule_date  DATE,
     from_hour      TIME(6),
     to_hour        TIME(6),
-    result         VARCHAR(10),
     meeting_id     VARCHAR(255),
     created_by     VARCHAR(100),
     created_date   DATETIME,
